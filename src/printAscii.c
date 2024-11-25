@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 // Comprehensive argument parsing
 int parse_arguments(int argc, char *argv[], AppConfig *config) {
     int opt;
-    while ((opt = getopt(argc, argv, "i:o:m:w:f:v")) != -1) {
+    while ((opt = getopt(argc, argv, "i:o:m:a:t:r:w:f:v")) != -1) {
         switch (opt) {
             case 'i': config->input_path = optarg; break;
             case 'o': config->output_path = optarg; break;
