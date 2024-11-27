@@ -2,6 +2,11 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "image_converter.h"
+#include "utils.h"
+#include "video_converter.h"
+#include "video_player.h"
+
 // Modes of operation
 typedef enum {
     MODE_IMAGE_TO_ASCII = 0,

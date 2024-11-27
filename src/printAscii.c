@@ -5,10 +5,6 @@
 #include <unistd.h>
 
 #include "config.h"
-#include "image_converter.h"
-#include "video_converter.h"
-#include "video_player.h"
-#include "utils.h"
 
 // Centralized error handling
 void handle_error(const char *message) {
@@ -73,7 +69,7 @@ int main(int argc, char *argv[]) {
     // Dispatch to appropriate handler based on mode
     switch (config.mode) {
         case MODE_IMAGE_TO_ASCII:
-            return convert_image_to_ascii(&config);
+            //return convert_image_to_ascii(&config);
         
         case MODE_VIDEO_TO_ASCII:
             return convert_video_to_ascii(&config);
