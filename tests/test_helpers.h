@@ -1,4 +1,5 @@
 #pragma once
+#include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -7,16 +8,26 @@
 // ======================
 // Core Assertions
 // ======================
-#define TEST_CASE(name) void name()
+#define TEST_CASE(name) bool name(void)
 #define RUN_TEST(name) do { \
-    printf("Running %-40s", #name); \
-    if (name()) printf("[PASS]\n"); \
-    else printf("[FAIL]\n"); \
+    printf("Testing %-30s", #name); \
+    fflush(stdout); \
+    if (name()) { \
+        printf("[PASS]\n"); \
+    } else { \
+        printf("[FAIL]\n"); \
+        tests_failed++; \
+    } \
+    tests_run++; \
 } while(0)
+
+// Test tracking variables
+extern unsigned tests_run;
+extern unsigned tests_failed;
 
 #define ASSERT(cond) \
     if (!(cond)) { \
-        fprintf(stderr, "\n  Assertion failed: %s:%d %s\n", __FILE__, __LINE__, #cond); \
+        fprintf(stderr, "\n  FAIL: %s:%d %s\n", __FILE__, __LINE__, #cond); \
         return false; \
     }
 
@@ -27,15 +38,7 @@
 // ======================
 // Image-Specific Assertions
 // ======================
-static inline bool images_equal(const Image* a, const Image* b) {
-    if (!a || !b) return false;
-    return a->width == b->width &&
-           a->height == b->height &&
-           a->channels == b->channels &&
-           memcmp(a->pixels, b->pixels, a->width * a->height * a->channels) == 0;
-}
-
-#define ASSERT_IMAGE_EQUAL(a, b) ASSERT(images_equal(a, b))
+#define ASSERT_IMAGE_EQUAL(a, b) ASSERT(image_compare(a, b))
 
 // ======================
 // Fixture Management
