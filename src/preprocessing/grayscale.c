@@ -1,14 +1,14 @@
-#include <core/image.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <core/image.h>
+#include <preprocessing/grayscale.h>
 
 uint8_t RGB_blend(uint8_t r, uint8_t g, uint8_t b) {
     return (uint8_t)(0.3f * (float)r + 0.6f * (float)g + 0.1f * (float)b);
 }
 
 uint8_t RGBA_blend(uint8_t r, uint8_t g, uint8_t b, uint8_t a, uint8_t alpha_value) {
-    uint8_t rgb = RGB_blend(r, g, b);
+    const uint8_t rgb = RGB_blend(r, g, b);
     return (1 - a / 255.0) * alpha_value + (a / 255.0) * rgb;
 }
 
@@ -37,7 +37,7 @@ void RGB_image_to_grayscale(Image* img) {
     img->channels = 1;
 }
 
-void RGBA_image_to_grayscale(Image* img, int alpha_value) {
+void RGBA_image_to_grayscale(Image* img, uint8_t alpha_value) {
     if(img->type != IMAGE_TYPE_RGBA) {
         fprintf(stderr, "Image is not RGBA\n");
         return;

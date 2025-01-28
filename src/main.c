@@ -2,15 +2,19 @@
 #include <stdint.h>
 
 #include "core/image.h"
+#include "preprocessing/grayscale.h"
 #include "io/image_loader.h"
+#include "io/image_saver.h"
 
 int main() {
-    char* filename = "../local/pikachu.png";
+    char* filename = "../local/pikachu2.png";
     Image* img = image_load_from_file(filename);
     
     if (img) {
-        printf("Loaded image: %dx%d, channels: %d\n", img->width, img->height, img->channels);
-        printf("First pixel: %d, %d, %d, %d\n", img->pixels[0], img->pixels[1],img->pixels[2],img->pixels[3]);
+        RGB_image_to_grayscale(img);
+
+        image_save_to_png_file(img, "pikachu_gray.png");
+
         image_free(img); // Single consistent free call
     }
     return 0;
