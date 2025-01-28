@@ -1,11 +1,9 @@
-#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image.h"
-#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 #include "io/image_saver.h"
 
 
-bool image_save_to_file(const Image* img, const char* filename) {
+bool image_save_to_png_file(const Image* img, const char* filename) {
     // Determine STB image type from our image type
     int stb_type;
     switch (img->type) {
@@ -13,7 +11,7 @@ bool image_save_to_file(const Image* img, const char* filename) {
         case IMAGE_TYPE_RGB: stb_type = STBI_rgb; break;
         case IMAGE_TYPE_RGBA: stb_type = STBI_rgb_alpha; break;
         default:
-            fprintf(stderr, "Unsupported image type\n");
+            fprintf(stderr, "Unsupported image type: %d\n", img->type);
             return false;
     }
 

@@ -7,6 +7,9 @@ file(GLOB_RECURSE SRC_FILES
     "utilities/*.c"
 )
 
+# Add the dedicated STB implementation file
+list(APPEND SRC_FILES ${CMAKE_SOURCE_DIR}/src/stb_image_implementation.c)
+
 # Create main library
 add_library(printAsciiLib STATIC ${SRC_FILES})
 

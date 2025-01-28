@@ -3,6 +3,6 @@
 
 #include "../core/image.h"
 
-bool image_save_to_file(const Image* img, const char* filename);
+bool image_save_to_png_file(const Image* img, const char* filename);
 
 #endif // IMAGE_SAVER_H

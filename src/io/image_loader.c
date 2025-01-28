@@ -1,4 +1,3 @@
-#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "io/image_loader.h"
 #include "core/image.h"
