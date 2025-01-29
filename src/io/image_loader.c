@@ -1,3 +1,4 @@
+#include <string.h>
 #include "stb_image.h"
 #include "io/image_loader.h"
 #include "core/image.h"

@@ -3,6 +3,7 @@
 
 #include "core/image.h"
 #include "preprocessing/grayscale.h"
+#include "preprocessing/invert.h"
 #include "io/image_loader.h"
 #include "io/image_saver.h"
 
@@ -12,6 +13,7 @@ int main() {
     
     if (img) {
         RGB_image_to_grayscale(img);
+        invert_grayscale_image(img);
 
         image_save_to_png_file(img, "pikachu_gray.png");
 
