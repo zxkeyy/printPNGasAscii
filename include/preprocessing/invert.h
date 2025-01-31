@@ -6,5 +6,6 @@
 void invert_grayscale_image(Image* img);
 void invert_rgb_image(Image* img);
 void invert_rgba_image(Image* img);
+void invert_image(Image* img);
 
 #endif // INVERT_H

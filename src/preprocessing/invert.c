@@ -48,3 +48,19 @@ void invert_rgba_image(Image* img) {
         }
     }
 }
+
+void invert_image(Image* img) {
+    switch(img->type) {
+        case IMAGE_TYPE_GRAY:
+            invert_grayscale_image(img);
+            break;
+        case IMAGE_TYPE_RGB:
+            invert_rgb_image(img);
+            break;
+        case IMAGE_TYPE_RGBA:
+            invert_rgba_image(img);
+            break;
+        default:
+            fprintf(stderr, "Unsupported image type\n");
+    }
+}

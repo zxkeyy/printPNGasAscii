@@ -61,3 +61,12 @@ void RGBA_image_to_grayscale(Image* img, uint8_t alpha_value) {
     img->type = IMAGE_TYPE_GRAY;
     img->channels = 1;
 }
+
+void image_to_grayscale(Image* img, uint8_t alpha_value) {
+    switch(img->type) {
+        case IMAGE_TYPE_RGB: RGB_image_to_grayscale(img); break;
+        case IMAGE_TYPE_RGBA: RGBA_image_to_grayscale(img, alpha_value); break;
+        case IMAGE_TYPE_GRAY: break; // Already grayscale
+        default: fprintf(stderr, "Unsupported image type\n");
+    }
+}
