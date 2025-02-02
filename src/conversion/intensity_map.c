@@ -16,22 +16,23 @@ char* intensity_map(const Image* img, const AsciiRamp* ramp){
 
     const int ramp_length = ramp->length;
 
-    char* output = malloc(img->width * img->height + img->height);
+    char* output = malloc(img->width * img->height + img->height + 1);
     if (!output) {
         perror("Failed to allocate output buffer");
         return NULL;
     }
 
+    int index = 0;
     for (int y = 0; y < img->height; y++) {
         for (int x = 0; x < img->width; x++) {
             const uint8_t* pixel = image_pixel_at(img, x, y);
             const uint8_t intensity = pixel[0];
             const int ramp_index = intensity * (ramp_length-1) / 255;
-            *output++ = ramp->characters[ramp_index];
+            output[index++] = ramp->characters[ramp_index];
         }
-        *output++ = '\n';
+        output[index++] = '\n';
     }
+    output[index] = '\0';
 
     return output;
-
 }
