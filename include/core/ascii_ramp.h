@@ -1,6 +1,8 @@
 #ifndef ASCII_RAMP_H
 #define ASCII_RAMP_H
 
+#include <stdbool.h>
+
 typedef struct {
     const char* characters;
     int length;
