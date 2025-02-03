@@ -13,8 +13,8 @@
 #include "conversion/intensity_map.h"
 
 const AsciiRamp DEFAULT_RAMP = {
-    .characters = " .:-=+*#%@",
-    .length = 10
+    .characters = " .:-=+*#@&8B$@",
+    .length = 14
 };
 
 const AppConfig DEFAULT_CONFIG = {
