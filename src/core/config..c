@@ -15,6 +15,7 @@ struct option long_options[] = {
     {"threshold", required_argument, NULL, 't'},
     {"invert", no_argument, NULL, 'r'},
     {"dither", no_argument, NULL, 'd'},
+    {"font-aspect-ratio", required_argument, NULL, 0},
     {"verbose", no_argument, NULL, 'v'},
     {"help", no_argument, NULL, '?'},
     {NULL, 0, NULL, 0}
@@ -33,6 +34,7 @@ void print_usage(const char* program_name) {
            "  -r, --invert               Invert colors\n"
            "  -d  --dither               Apply dithering to the image\n"
            "  -t  --threshold            Threshold for dithering (0 - 255, default=128)\n"
+           "  --font-aspect-ratio <ratio> Width to height ratio of the font (default: 0.45)\n"
            "  -v, --verbose              Verbose output\n"
            "  -?, --help                 Display this help message\n",
            program_name);
@@ -57,6 +59,11 @@ int parse_arguments(int argc, char* argv[], AppConfig* config){
             case 't': config->threshold = atoi(optarg); break;
             case 'v': config->verbose = 1; break;
             case '?': print_usage(argv[0]); return 1;
+            case 0: 
+                if (strcmp(long_options[optind].name, "font-aspect-ratio") == 0) {
+                    config->font_aspect_ratio = atof(optarg);
+                }
+                break;
             default:
                 return -1;
         }
@@ -91,6 +98,11 @@ int validate_config(AppConfig* config) {
 
     if (config->threshold < 0 || config->threshold > 255) {
         fprintf(stderr, "Threshold value must be between 0 and 255\n");
+        return -1;
+    }
+
+    if(config->font_aspect_ratio < 0){
+        fprintf(stderr, "Font aspect ratio must be positive\n");
         return -1;
     }
 

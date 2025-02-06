@@ -28,6 +28,7 @@ const AppConfig DEFAULT_CONFIG = {
     .inverse_colors = 0,
     .dither = 0,
     .threshold = 128,
+    .font_aspect_ratio = 0.45,
     .verbose = 0,
     .ramp = {0}
 };
@@ -53,18 +54,19 @@ int main(int argc, char *argv[]) {
     //debug
     image_save_to_png_file(img, "1original.png");
 
-    if(config.width == -1){
+    if (config.width == -1){
         config.width = img->width;
     }
-    if(config.height == -1){
-        config.height = img->height;
+    if (config.height == -1){
+        config.height = (int)(float)img->height * config.font_aspect_ratio;
     }
+
     // calculate width or height if one of them is 0 to keep aspect ratio
-    if(config.width == 0){
-        config.width = (int)((float)config.height / img->height * img->width);
+    if (config.width == 0){
+        config.width = (int)(((float)config.height / img->height * img->width) / config.font_aspect_ratio);
     }
-    if(config.height == 0){
-        config.height = (int)((float)config.width / img->width * img->height);
+    if (config.height == 0){
+        config.height = (int)(((float)config.width / img->width * img->height) * config.font_aspect_ratio);
     }
 
     image_resize(img, config.width, config.height);

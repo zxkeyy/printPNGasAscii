@@ -14,6 +14,7 @@ typedef struct {
     int dither;
     int threshold;
     int verbose;
+    float font_aspect_ratio; // Width to height ratio of the font
     AsciiRamp ramp;
 } AppConfig;
 
