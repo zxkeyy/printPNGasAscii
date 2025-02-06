@@ -29,6 +29,8 @@ void print_usage(const char* program_name) {
            "  -h, --height   <height>    Output height in characters ('-1' to keep the height of the source image, default: 75 character)\n"
            "  -a, --alpha    <alpha>     Defines brightness of background for images with alpha transparency (0 - 255, default=0)\n"
            "  -r, --invert               Invert colors\n"
+           "  -d  --dither               Apply dithering to the image\n"
+           "  -t  --threshold            Threshold for dithering (0 - 255, default=128)\n"
            "  -v, --verbose              Verbose output\n"
            "  -?, --help                 Display this help message\n",
            program_name);
@@ -36,7 +38,7 @@ void print_usage(const char* program_name) {
 
 int parse_arguments(int argc, char* argv[], AppConfig* config){
     int opt;
-    while ((opt = getopt_long(argc, argv, "i:o:w:h:g:a:nrv?", long_options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "i:o:w:h:g:a:t:nrdv?", long_options, NULL)) != -1) {
         switch (opt) {
             case 'i': config->input_path = optarg; break;
             case 'o': config->output_path = optarg; break;
@@ -46,6 +48,7 @@ int parse_arguments(int argc, char* argv[], AppConfig* config){
             case 'h': config->height = atoi(optarg); break;
             case 'a': config->alpha = atoi(optarg); break;
             case 'r': config->inverse_colors = 1; break;
+            case 'd': config->dither = 1; break;
             case 'v': config->verbose = 1; break;
             case '?': print_usage(argv[0]); return 1;
             default:

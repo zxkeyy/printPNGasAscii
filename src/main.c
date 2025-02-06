@@ -4,6 +4,7 @@
 
 #include "core/image.h"
 #include "core/config.h"
+#include "preprocessing/dither.h"
 #include "preprocessing/grayscale.h"
 #include "preprocessing/invert.h"
 #include "preprocessing/resize.h"
@@ -55,6 +56,13 @@ int main(int argc, char *argv[]) {
     }
 
     image_to_grayscale(img, config.alpha);
+
+    if (config.dither) {
+        floyd_steinberg_dither(img);
+    }
+
+    //debug
+    image_save_to_png_file(img, "output.png");
 
     char* output = intensity_map(img, &config.ramp);
     if (!output) {

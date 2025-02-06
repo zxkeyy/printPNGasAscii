@@ -11,6 +11,7 @@ typedef struct {
     int height;
     int alpha;
     int inverse_colors;
+    int dither;
     int verbose;
     AsciiRamp ramp;
 } AppConfig;
