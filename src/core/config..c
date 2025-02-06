@@ -12,7 +12,9 @@ struct option long_options[] = {
     {"width", required_argument, NULL, 'w'},
     {"height", required_argument, NULL, 'h'},
     {"alpha", required_argument, NULL, 'a'},
+    {"threshold", required_argument, NULL, 't'},
     {"invert", no_argument, NULL, 'r'},
+    {"dither", no_argument, NULL, 'd'},
     {"verbose", no_argument, NULL, 'v'},
     {"help", no_argument, NULL, '?'},
     {NULL, 0, NULL, 0}
@@ -38,23 +40,35 @@ void print_usage(const char* program_name) {
 
 int parse_arguments(int argc, char* argv[], AppConfig* config){
     int opt;
+    //To calculate if user wants to keep aspect ratio
+    int width_set = 0;
+    int height_set = 0;
     while ((opt = getopt_long(argc, argv, "i:o:w:h:g:a:t:nrdv?", long_options, NULL)) != -1) {
         switch (opt) {
             case 'i': config->input_path = optarg; break;
             case 'o': config->output_path = optarg; break;
             case 'n': config->no_terminal_output = 1; break;
             case 'g': config->ramp.characters = optarg; config->ramp.length = strlen(optarg); break;
-            case 'w': config->width = atoi(optarg); break;
-            case 'h': config->height = atoi(optarg); break;
+            case 'w': config->width = atoi(optarg); width_set = 1; break;
+            case 'h': config->height = atoi(optarg); height_set = 1; break;
             case 'a': config->alpha = atoi(optarg); break;
             case 'r': config->inverse_colors = 1; break;
             case 'd': config->dither = 1; break;
+            case 't': config->threshold = atoi(optarg); break;
             case 'v': config->verbose = 1; break;
             case '?': print_usage(argv[0]); return 1;
             default:
                 return -1;
         }
     }
+
+    if(width_set && !height_set){
+        config->height = 0; // 0 means keep aspect ratio
+    }
+    if(!width_set && height_set){
+        config->width = 0; // 0 means keep aspect ratio
+    }
+
 
     return 0;
 }
@@ -65,13 +79,18 @@ int validate_config(AppConfig* config) {
         return -1;
     }
 
-    if ((config->width <= 0 && config->width != -1) || (config->height <= 0  && config->height != -1)) {
+    if ((config->width < -1) || (config->height < -1) || (config->width == 0 && config->height == 0)) {
         fprintf(stderr, "Invalid output dimensions: %dx%d\n", config->width, config->height);
         return -1;
     }
 
     if (config->alpha < 0 || config->alpha > 255) {
         fprintf(stderr, "Alpha value must be between 0 and 255\n");
+        return -1;
+    }
+
+    if (config->threshold < 0 || config->threshold > 255) {
+        fprintf(stderr, "Threshold value must be between 0 and 255\n");
         return -1;
     }
 
