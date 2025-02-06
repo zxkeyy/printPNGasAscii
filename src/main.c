@@ -22,10 +22,10 @@ const AppConfig DEFAULT_CONFIG = {
     .input_path = NULL,
     .output_path = NULL,
     .no_terminal_output = 0,
-    .width = 150,
+    .width = 100,
     .height = 0,
     .alpha = 0,
-    .inverse_colors = 0,
+    .negative = 0,
     .dither = 0,
     .threshold = 128,
     .font_aspect_ratio = 0.45,
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
     //debug
     image_save_to_png_file(img, "2resized.png");
 
-    if (config.inverse_colors) {
+    if (config.negative) {
         invert_image(img);
         //debug
         image_save_to_png_file(img, "3inverted.png");

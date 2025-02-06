@@ -7,13 +7,13 @@
 struct option long_options[] = {
     {"input", required_argument, NULL, 'i'},
     {"output", required_argument, NULL, 'o'},
-    {"no-terminal-output", no_argument, NULL, 'n'},
+    {"no-terminal-output", no_argument, NULL, 'q'},
     {"ascii-gradient", required_argument, NULL, 'g'},   
     {"width", required_argument, NULL, 'w'},
     {"height", required_argument, NULL, 'h'},
     {"alpha", required_argument, NULL, 'a'},
     {"threshold", required_argument, NULL, 't'},
-    {"invert", no_argument, NULL, 'r'},
+    {"negative", no_argument, NULL, 'n'},
     {"dither", no_argument, NULL, 'd'},
     {"font-aspect-ratio", required_argument, NULL, 0},
     {"verbose", no_argument, NULL, 'v'},
@@ -26,12 +26,12 @@ void print_usage(const char* program_name) {
            "Options:\n"
            "  -i, --input    <input>     Input file (JPG, PNG, TGA, BMP, PSD, GIF, HDR, PIC image)\n"
            "  -o, --output   <output>    Output file (optional)\n"
-           "  -n, --no-terminal-output   Disable terminal output\n"
+           "  -q, --no-terminal-output   Quiet mode disables terminal output\n"
            "  -g --ascii-gradient <gradient> ASCII gradient to use (default: ' .:-=+*#@&8B$@')\n"
-           "  -w, --width    <width>     Output width in characters ('-1' to keep the width of the source image, default: 150 character)\n"
-           "  -h, --height   <height>    Output height in characters ('-1' to keep the height of the source image, default: 75 character)\n"
+           "  -w, --width    <width>     Output width in characters ('-1' to keep the width of the source image, default: 100 character)\n"
+           "  -h, --height   <height>    Output height in characters ('-1' to keep the height of the source image)\n"
            "  -a, --alpha    <alpha>     Defines brightness of background for images with alpha transparency (0 - 255, default=0)\n"
-           "  -r, --invert               Invert colors\n"
+           "  -n, --negative             Invert colors\n"
            "  -d  --dither               Apply dithering to the image\n"
            "  -t  --threshold            Threshold for dithering (0 - 255, default=128)\n"
            "  --font-aspect-ratio <ratio> Width to height ratio of the font (default: 0.45)\n"
@@ -42,19 +42,20 @@ void print_usage(const char* program_name) {
 
 int parse_arguments(int argc, char* argv[], AppConfig* config){
     int opt;
+    int optind = 0;
     //To calculate if user wants to keep aspect ratio
     int width_set = 0;
     int height_set = 0;
-    while ((opt = getopt_long(argc, argv, "i:o:w:h:g:a:t:nrdv?", long_options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "i:o:w:h:g:a:t:nqrdv?", long_options, &optind)) != -1) {
         switch (opt) {
             case 'i': config->input_path = optarg; break;
             case 'o': config->output_path = optarg; break;
-            case 'n': config->no_terminal_output = 1; break;
+            case 'q': config->no_terminal_output = 1; break;
             case 'g': config->ramp.characters = optarg; config->ramp.length = strlen(optarg); break;
             case 'w': config->width = atoi(optarg); width_set = 1; break;
             case 'h': config->height = atoi(optarg); height_set = 1; break;
             case 'a': config->alpha = atoi(optarg); break;
-            case 'r': config->inverse_colors = 1; break;
+            case 'n': config->negative = 1; break;
             case 'd': config->dither = 1; break;
             case 't': config->threshold = atoi(optarg); break;
             case 'v': config->verbose = 1; break;

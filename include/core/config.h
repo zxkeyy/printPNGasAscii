@@ -10,7 +10,7 @@ typedef struct {
     int width;
     int height;
     int alpha;
-    int inverse_colors;
+    int negative;
     int dither;
     int threshold;
     int verbose;
